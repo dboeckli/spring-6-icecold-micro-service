@@ -271,6 +271,7 @@
                     </execution>
 
                     <execution>
+                        <id>build-docker-image</id>
                         <goals>
                             <goal>build-image-no-fork</goal>
                         </goals>
