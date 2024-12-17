@@ -1,4 +1,4 @@
-package ch.dboeckli.springframeworkguru.spring6icecoldmicroservice.spring6icecoldmicroservice;
+package ch.dboeckli.springframeworkguru.spring6icecoldmicroservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
