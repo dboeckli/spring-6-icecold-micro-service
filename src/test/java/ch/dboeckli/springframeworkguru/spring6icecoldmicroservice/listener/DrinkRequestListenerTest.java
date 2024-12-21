@@ -33,7 +33,7 @@ public class DrinkRequestListenerTest {
             .build());
 
         await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
-            assertEquals(1, drinkPreparedListener.iceColdMessageCounter.get());
+            assertEquals(1, drinkPreparedListener.messageCounter.get());
         });
     }
 

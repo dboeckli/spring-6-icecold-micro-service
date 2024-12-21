@@ -12,13 +12,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 public class DrinkPreparedListener {
 
-    public AtomicInteger iceColdMessageCounter = new AtomicInteger(0);
+    public AtomicInteger messageCounter = new AtomicInteger(0);
 
     @KafkaListener(topics = KafkaConfig.DRINK_PREPARED_TOPIC, groupId = "ice-cold-listener")
     public void listen(DrinkPreparedEvent event) {
         log.info("### DrinkPreparedListener:  I'm listening...:: " + event);
 
-        iceColdMessageCounter.incrementAndGet();
+        messageCounter.incrementAndGet();
     }
     
 }
