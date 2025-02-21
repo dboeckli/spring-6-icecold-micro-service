@@ -270,6 +270,7 @@
 
                     <execution>
                         <id>start-springboot-app</id>
+                        <phase>post-integration-test</phase>
                         <goals>
                             <goal>start</goal>
                             <goal>stop</goal>
