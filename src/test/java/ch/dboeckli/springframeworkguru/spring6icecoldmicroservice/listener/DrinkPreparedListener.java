@@ -18,8 +18,7 @@ public class DrinkPreparedListener {
 
     @KafkaListener(topics = KafkaConfig.DRINK_PREPARED_TOPIC, groupId = "ice-cold-listener")
     public void listen(DrinkPreparedEvent event) {
-        log.info("### DrinkPreparedListener:  I'm listening...:: " + event);
-
+        log.info("### DrinkPreparedListener:  Got a event: {} ", event);
         messageCounter.incrementAndGet();
     }
     
