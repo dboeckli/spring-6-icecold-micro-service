@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @EmbeddedKafka(controlledShutdown = true, topics = {KafkaConfig.DRINK_REQUEST_ICE_COLD_TOPIC, KafkaConfig.DRINK_PREPARED_TOPIC}, partitions = 1)
+@ActiveProfiles("test")
 public class DrinkRequestListenerTest {
 
     @Autowired
@@ -32,9 +34,7 @@ public class DrinkRequestListenerTest {
             .beerOrderLineDTO(createDto())
             .build());
 
-        await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
-            assertEquals(1, drinkPreparedListener.messageCounter.get());
-        });
+        await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> assertEquals(1, drinkPreparedListener.messageCounter.get()));
     }
 
 

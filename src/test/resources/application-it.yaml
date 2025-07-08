@@ -8,7 +8,7 @@ spring:
       stop:
         command: down
       skip:
-        in-tests: true
+        in-tests: false
 
   kafka:
 
