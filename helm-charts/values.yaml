@@ -1,0 +1,45 @@
+global:
+  timezone: Europe/Zurich
+  timezonePath: /etc/localtime
+  springDebug: false
+  namespace: spring-6-icecold-micro-service
+
+replicaCount: 1
+
+image:
+  repository: @docker.repo@/@project.artifactId@
+  tag: @project.version@
+
+service:
+  type: NodePort
+  port: 8080
+  targetPort: 8080
+  nodePort: 30080
+
+externalAccess:
+  host: "localhost"
+  protocol: "http"
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 1Gi
+  requests:
+    cpu: 250m
+    memory: 512Mi
+
+probes:
+  startup:
+    failureThreshold: 30
+    periodSeconds: 10
+  readiness:
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+  liveness:
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+
+ingress:
+  enabled: false
