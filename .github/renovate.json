@@ -24,8 +24,8 @@
     },
     "kubernetes": {
         "managerFilePatterns": [
-            "/k8s/.+\\.ya?ml$",
-            "/helm-charts/.+\\.ya?ml$"
+            "/k8s/.+\\.ya?ml$/",
+            "/helm-charts/.+\\.ya?ml$/"
         ]
     },
     "helm-values": {
