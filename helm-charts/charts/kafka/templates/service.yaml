@@ -11,7 +11,6 @@ spec:
   ports:
     # PLAINTEXT Listener
     - port: {{ .Values.kafka.port }}
-      nodePort: {{ .Values.kafka.nodePort }}
       targetPort: kafka
       protocol: TCP
       name: kafka
@@ -19,6 +18,7 @@ spec:
     # PLAINTEXT_HOST Listener
     - port: {{ .Values.kafka.clientPort }}
       targetPort: client
+      nodePort: {{ .Values.kafka.nodePort }}
       protocol: TCP
       name: client
 
