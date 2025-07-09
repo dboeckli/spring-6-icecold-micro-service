@@ -52,7 +52,7 @@ delete all
 kubectl delete all --all -n spring-6-icecold-micro-service
 ```
 
-create busiybox sidecar
+create busybox sidecar
 ```powershell
 kubectl run busybox-test --rm -it --image=busybox:1.36 --namespace=spring-6-icecold-micro-service --command -- sh
 ```

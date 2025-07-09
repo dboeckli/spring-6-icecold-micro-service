@@ -10,7 +10,7 @@ metadata:
 spec:
   containers:
     - name: test-kafka-connection
-      image: bitnami/kafka:latest
+      image: bitnami/kafka:3.7.1
       command: ['/bin/bash', '-c']
       args:
         - |
