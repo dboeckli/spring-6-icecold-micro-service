@@ -41,5 +41,10 @@ probes:
     timeoutSeconds: 5
     failureThreshold: 6
 
+kafka:
+  serviceFQDN: "spring-6-icecold-micro-service-kafka.spring-6-icecold-micro-service.svc.cluster.local"
+  port: 9092
+  clientPort: 29092
+
 ingress:
   enabled: false
