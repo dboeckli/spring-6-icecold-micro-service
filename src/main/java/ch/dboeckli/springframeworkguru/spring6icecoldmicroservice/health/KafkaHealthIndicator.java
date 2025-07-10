@@ -47,18 +47,22 @@ public class KafkaHealthIndicator implements HealthIndicator {
             // Check consumer groups
             Collection<ConsumerGroupListing> groups;
             DescribeClusterResult describeCluster;
+            Collection<TopicListing> topics;
             try (AdminClient adminClient = AdminClient.create(kafkaAdmin.getConfigurationProperties())) {
                 ListConsumerGroupsResult consumerGroups = adminClient.listConsumerGroups();
                 groups = consumerGroups.all().get(5, TimeUnit.SECONDS);
                 describeCluster = adminClient.describeCluster(new DescribeClusterOptions().timeoutMs(1000));
+                ListTopicsResult topicsResult = adminClient.listTopics();
+                topics = topicsResult.listings().get(5, TimeUnit.SECONDS);
             }
 
             if (wasDownLastCheck) {
-                log.info("### Kafka Server connection successfully established to {}. Response: {}. Consumer groups: {}. clusterId: {}",
+                log.info("### Kafka Server connection successfully established.\n BootstrapServers: {}\n Response: {}\n Consumer groups: {}\n clusterId: {}\n topics: {}",
                     kafkaBootstrapServers,
                     responseInfo,
                     groups.size(),
-                    describeCluster.clusterId().get());
+                    describeCluster.clusterId().get(),
+                    topics.stream().map(TopicListing::name).toList());
                 wasDownLastCheck = false;
             }
 
@@ -68,6 +72,7 @@ public class KafkaHealthIndicator implements HealthIndicator {
                 .withDetail("clusterId", describeCluster.clusterId().get())
                 .withDetail("nodeCount", describeCluster.nodes().get().size())
                 .withDetail("consumerGroups", groups.size())
+                .withDetail("topics", topics.stream().map(TopicListing::name).toList())
                 .build();
         } catch (Exception ex) {
             wasDownLastCheck = true;
