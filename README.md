@@ -1,6 +1,19 @@
-TODO: FILL ME
+# Spring 6 Microservice Hwith Kafka Integration
 
+## Abstract
 
+This project implements a modern microservice architecture using Spring 6 and Apache Kafka, deployed on Kubernetes using Helm. The solution features a comprehensive deployment pipeline with robust monitoring, logging, and testing capabilities. Key components include:
+
+- A Spring 6 microservice with Kafka message broker integration
+- Containerized deployment using Kubernetes and Helm
+- Structured JSON logging with Logstash encoding
+- Automated dependency management through Renovate
+- Health monitoring via Spring Actuator endpoints
+- Comprehensive test suite for Kafka connectivity and service health
+- Time zone aware configuration with container-level customization
+- Infrastructure as Code (IaC) approach with Helm charts
+
+The project emphasizes DevOps best practices, including automated testing, health monitoring, and infrastructure automation. It's designed for high availability and maintainability in cloud-native environments, with particular attention to operational concerns such as logging, monitoring, and dependency management.
 
 ### Deployment with Helm
 
@@ -63,6 +76,17 @@ nslookup spring-6-icecold-micro-service-kafka.spring-6-icecold-micro-service.svc
 
 nc -zv spring-6-icecold-micro-service-kafka.spring-6-icecold-micro-service.svc.cluster.local 29092
 echo "Exit code for port 29092: $?"
+```
+
+create kafka sidecar
+```powershell
+kubectl run kafka-test --rm -it --image=bitnami/kafka:3.7.1 --namespace=spring-6-icecold-micro-service --command -- sh
+```
+
+run kafka commands
+```powershell
+cd /opt/bitnami/kafka/bin
+./kafka-topics.sh --bootstrap-server spring-6-icecold-micro-service-kafka.spring-6-icecold-micro-service.svc.cluster.local:29092 --list
 ```
 
 You can use the actuator rest call to verify via port 30080

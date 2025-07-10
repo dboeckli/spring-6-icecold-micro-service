@@ -16,10 +16,6 @@ service:
   targetPort: 8080
   nodePort: 30080
 
-externalAccess:
-  host: "localhost"
-  protocol: "http"
-
 resources:
   limits:
     cpu: 500m
