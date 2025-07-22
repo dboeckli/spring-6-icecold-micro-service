@@ -18,13 +18,13 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class KafkaHealthIndicator implements HealthIndicator {
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
     private final KafkaAdmin kafkaAdmin;
     private final String kafkaBootstrapServers;
 
     private boolean wasDownLastCheck = true;
 
-    public KafkaHealthIndicator(KafkaTemplate<String, String> kafkaTemplate,
+    public KafkaHealthIndicator(KafkaTemplate<String, Object> kafkaTemplate,
                                 KafkaAdmin kafkaAdmin,
                                 @Value("${spring.kafka.bootstrap-servers}") String kafkaBootstrapServers) {
         this.kafkaTemplate = kafkaTemplate;
@@ -36,8 +36,8 @@ public class KafkaHealthIndicator implements HealthIndicator {
     public Health health() {
         try {
             // Check producer connection
-            Future<SendResult<String, String>> future = kafkaTemplate.send("health-check", "health-check-message");
-            SendResult<String, String> result = future.get(5, TimeUnit.SECONDS);
+            Future<SendResult<String, Object>> future = kafkaTemplate.send("health-check", "health-check-message");
+            SendResult<String, Object> result = future.get(5, TimeUnit.SECONDS);
 
             String responseInfo = String.format("Topic: %s, Partition: %d, Offset: %d",
                 result.getRecordMetadata().topic(),
@@ -57,12 +57,15 @@ public class KafkaHealthIndicator implements HealthIndicator {
             }
 
             if (wasDownLastCheck) {
-                log.info("### Kafka Server connection successfully established.\n BootstrapServers: {}\n Response: {}\n Consumer groups: {}\n clusterId: {}\n topics: {}",
+                log.info("### Kafka Server connection successfully established.\n BootstrapServers: {}\n Response: {}\n Consumer groups: {}\n clusterId: {}\n topics: {}\n nodes: {}",
                     kafkaBootstrapServers,
                     responseInfo,
-                    groups.size(),
+                    groups.stream().map(ConsumerGroupListing::groupId).toList(),
                     describeCluster.clusterId().get(),
-                    topics.stream().map(TopicListing::name).toList());
+                    topics.stream().map(TopicListing::name).toList(),
+                    describeCluster.nodes().get().stream()
+                        .map(node -> String.format("%s:%d", node.host(), node.port()))
+                        .toList());
                 wasDownLastCheck = false;
             }
 
@@ -70,8 +73,10 @@ public class KafkaHealthIndicator implements HealthIndicator {
                 .withDetail("kafkaBootstrapServers", kafkaBootstrapServers)
                 .withDetail("kafkaResponse", responseInfo)
                 .withDetail("clusterId", describeCluster.clusterId().get())
-                .withDetail("nodeCount", describeCluster.nodes().get().size())
-                .withDetail("consumerGroups", groups.size())
+                .withDetail("nodes", describeCluster.nodes().get().stream()
+                    .map(node -> String.format("%s:%d", node.host(), node.port()))
+                    .toList())
+                .withDetail("consumerGroups", groups.stream().map(ConsumerGroupListing::groupId).toList())
                 .withDetail("topics", topics.stream().map(TopicListing::name).toList())
                 .build();
         } catch (Exception ex) {
