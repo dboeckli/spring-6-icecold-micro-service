@@ -1,3 +1,5 @@
+# Those values are set by Maven filtering
+# and will be replaced with a valid version number during the build process.
 apiVersion: v2
 name: @project.artifactId@
 description: A Helm chart for Spring 6 Project
@@ -6,7 +8,8 @@ version: @helm.chart.version@
 appVersion: @project.version@
 
 dependencies:
-  - name: kafka
+  - name: spring-6-icecold-micro-service-kafka
+    alias: kafka
     version: @helm.chart.version@
     repository: file://charts/kafka
     condition: kafka.enabled

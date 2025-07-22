@@ -17,15 +17,17 @@ spec:
     spec:
       initContainers:
         - name: wait-for-kafka-internal
-          image: busybox:1.37.0
+          image: {{.Values.busyboxImage.repository }}:{{.Values.busyboxImage.tag }}
+          imagePullPolicy: {{.Values.busyboxImage.pullPolicy }}
           command: [ 'sh', '-c', 'until nc -z {{ .Values.kafka.serviceFQDN  }} {{ .Values.kafka.port }}; do echo "[busybox: wait-for-kafka-internal] waiting for kafka"; sleep 2; done; echo "[busybox: wait-for-kafka-internal] kafka is available"' ]
         - name: wait-for-kafka-client
-          image: busybox:1.37.0
+          image: {{.Values.busyboxImage.repository }}:{{.Values.busyboxImage.tag }}
+          imagePullPolicy: {{.Values.busyboxImage.pullPolicy }}
           command: [ 'sh', '-c', 'until nc -z {{ .Values.kafka.serviceFQDN  }} {{ .Values.kafka.clientPort }}; do echo "[busybox: wait-for-kafka-client] waiting for kafka"; sleep 2; done; echo "[busybox: wait-for-kafka-client] kafka is available"' ]
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: IfNotPresent
+          image: "{{ .Values.image.registry }}/@project.artifactId@:{{ .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: JAVA_TIMEZONE
               value: "{{ .Values.global.timezone }}"

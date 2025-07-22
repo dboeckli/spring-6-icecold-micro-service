@@ -20,9 +20,8 @@ spec:
     spec:
       containers:
         - name: kafka
-          # TODO: USE BITNAMI
-          image: confluentinc/cp-kafka:7.9.2
-          imagePullPolicy: IfNotPresent
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             # PLAINTEXT Listener
             - name: kafka
