@@ -80,7 +80,7 @@ echo "Exit code for port 29092: $?"
 
 create kafka sidecar
 ```powershell
-kubectl run kafka-test --rm -it --image=bitnami/kafka:3.7.1 --namespace=spring-6-icecold-micro-service --command -- sh
+kubectl run kafka-test --rm -it --image=bitnamilegacy/kafka:3.9.0 --namespace=spring-6-icecold-micro-service --command -- sh
 ```
 
 run kafka commands
