@@ -12,7 +12,7 @@ spec:
     - name: test-kafka-connection
       image: {{ .Values.bitnamiKafkaImage.repository }}:{{ .Values.bitnamiKafkaImage.tag }}
       imagePullPolicy: {{ .Values.bitnamiKafkaImage.pullPolicy }}
-      command: ['/bin/bash', '-c']
+      command: [ '/bin/bash', '-c' ]
       args:
         - |
           ERROR_OCCURED=0
