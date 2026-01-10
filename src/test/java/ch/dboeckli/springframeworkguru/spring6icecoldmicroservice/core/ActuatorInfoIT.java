@@ -78,12 +78,12 @@ class ActuatorInfoIT {
             .andExpect(jsonPath("$.details.nodes[0]").value("localhost:29092"))
             .andExpect(jsonPath("$.details.consumerGroups").isArray())
             .andExpect(jsonPath("$.details.consumerGroups").value(containsInAnyOrder(
-                "ColdListener"
+                "IceColdListener"
             )))
             .andExpect(jsonPath("$.details.topics").isArray())
             .andExpect(jsonPath("$.details.topics").value(containsInAnyOrder(
                 "health-check",
-                "drink.request.cold"
+                "drink.request.icecold"
             )));
     }
 
