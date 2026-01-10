@@ -1,6 +1,6 @@
 package ch.dboeckli.springframeworkguru.spring6icecoldmicroservice.listener;
 
-import ch.dboeckli.springframeworkguru.spring6icecoldmicroservice.config.KafkaConfig;
+import ch.dboeckli.springframeworkguru.spring6icecoldmicroservice.config.KafkaConstants;
 import ch.guru.springframework.spring6restmvcapi.dto.BeerDTO;
 import ch.guru.springframework.spring6restmvcapi.dto.BeerOrderLineDTO;
 import ch.guru.springframework.spring6restmvcapi.dto.BeerStyle;
@@ -19,7 +19,7 @@ import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@EmbeddedKafka(controlledShutdown = true, topics = {KafkaConfig.DRINK_REQUEST_ICE_COLD_TOPIC, KafkaConfig.DRINK_PREPARED_TOPIC}, partitions = 1)
+@EmbeddedKafka(controlledShutdown = true, topics = {KafkaConstants.DRINK_REQUEST_ICE_COLD_TOPIC, KafkaConstants.DRINK_PREPARED_TOPIC}, partitions = 1)
 @ActiveProfiles("test")
 @Slf4j
 public class DrinkRequestListenerTest {
@@ -40,7 +40,7 @@ public class DrinkRequestListenerTest {
     }
 
 
-    public BeerOrderLineDTO createDto(){
+    public BeerOrderLineDTO createDto() {
         return BeerOrderLineDTO.builder()
             .beer(BeerDTO.builder()
                 .id(UUID.randomUUID())
@@ -49,5 +49,5 @@ public class DrinkRequestListenerTest {
                 .build())
             .build();
     }
-    
+
 }
