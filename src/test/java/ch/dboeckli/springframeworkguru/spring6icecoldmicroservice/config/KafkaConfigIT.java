@@ -28,19 +28,20 @@ class KafkaConfigIT {
         try (AdminClient adminClient = AdminClient.create(kafkaAdmin.getConfigurationProperties())) {
             await().atMost(30, TimeUnit.SECONDS).untilAsserted(() -> {
                 ListTopicsResult topicsResult = adminClient.listTopics();
+                log.info("Topic list: {}", topicsResult.names().get());
                 Collection<TopicListing> topics = topicsResult.listings().get(5, TimeUnit.SECONDS);
 
                 assertThat(topics)
                     .extracting(TopicListing::name)
-                    .contains(KafkaConfig.DRINK_REQUEST_ICE_COLD_TOPIC);
+                    .contains(KafkaConstants.DRINK_REQUEST_ICE_COLD_TOPIC);
             });
 
             await().atMost(30, TimeUnit.SECONDS).untilAsserted(() -> {
-                ListConsumerGroupsResult consumerGroupsResult = adminClient.listConsumerGroups();
-                Collection<ConsumerGroupListing> groups = consumerGroupsResult.all().get(5, TimeUnit.SECONDS);
+                ListGroupsResult consumerGroupsResult = adminClient.listGroups();
+                Collection<GroupListing> groups = consumerGroupsResult.all().get(5, TimeUnit.SECONDS);
 
                 assertThat(groups)
-                    .extracting(ConsumerGroupListing::groupId)
+                    .extracting(GroupListing::groupId)
                     .contains(GROUP_ID);
             });
         }
