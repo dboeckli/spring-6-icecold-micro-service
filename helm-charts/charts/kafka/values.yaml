@@ -3,7 +3,7 @@ global:
 
 image:
   repository: confluentinc/cp-kafka
-  tag: "8.3.1"
+  tag: "8.3.2"
   pullPolicy: IfNotPresent
 
 kafkaImage:
