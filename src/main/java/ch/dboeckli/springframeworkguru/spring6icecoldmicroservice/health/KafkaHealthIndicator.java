@@ -26,9 +26,8 @@ public class KafkaHealthIndicator implements HealthIndicator {
 
     private boolean wasDownLastCheck = true;
 
-    public KafkaHealthIndicator(KafkaTemplate<String, Object> kafkaTemplate,
-                                KafkaAdmin kafkaAdmin,
-                                @Value("${spring.kafka.bootstrap-servers}") String kafkaBootstrapServers) {
+    public KafkaHealthIndicator(KafkaTemplate<String, Object> kafkaTemplate, KafkaAdmin kafkaAdmin,
+            @Value("${spring.kafka.bootstrap-servers}") String kafkaBootstrapServers) {
         this.kafkaTemplate = kafkaTemplate;
         this.adminClient = AdminClient.create(kafkaAdmin.getConfigurationProperties());
         this.kafkaBootstrapServers = kafkaBootstrapServers;
@@ -42,9 +41,8 @@ public class KafkaHealthIndicator implements HealthIndicator {
             SendResult<String, Object> result = future.get(5, TimeUnit.SECONDS);
 
             String responseInfo = String.format("Topic: %s, Partition: %d, Offset: %d",
-                result.getRecordMetadata().topic(),
-                result.getRecordMetadata().partition(),
-                result.getRecordMetadata().offset());
+                    result.getRecordMetadata().topic(), result.getRecordMetadata().partition(),
+                    result.getRecordMetadata().offset());
 
             // Check consumer groups
             Collection<GroupListing> groups;
@@ -58,15 +56,15 @@ public class KafkaHealthIndicator implements HealthIndicator {
             topics = topicsResult.listings().get(5, TimeUnit.SECONDS);
 
             if (wasDownLastCheck) {
-                log.info("### Kafka Server connection successfully established.\n BootstrapServers: {}\n Response: {}\n Consumer groups: {}\n clusterId: {}\n topics: {}\n nodes: {}",
-                    kafkaBootstrapServers,
-                    responseInfo,
-                    groups.stream().map(GroupListing::groupId).toList(),
-                    describeCluster.clusterId().get(),
-                    topics.stream().map(TopicListing::name).toList(),
-                    describeCluster.nodes().get().stream()
-                        .map(node -> String.format("%s:%d", node.host(), node.port()))
-                        .toList());
+                log.info(
+                        "### Kafka Server connection successfully established.\n BootstrapServers: {}\n Response: {}\n Consumer groups: {}\n clusterId: {}\n topics: {}\n nodes: {}",
+                        kafkaBootstrapServers, responseInfo, groups.stream().map(GroupListing::groupId).toList(),
+                        describeCluster.clusterId().get(), topics.stream().map(TopicListing::name).toList(),
+                        describeCluster.nodes()
+                            .get()
+                            .stream()
+                            .map(node -> String.format("%s:%d", node.host(), node.port()))
+                            .toList());
                 wasDownLastCheck = false;
             }
 
@@ -74,18 +72,21 @@ public class KafkaHealthIndicator implements HealthIndicator {
                 .withDetail("kafkaBootstrapServers", kafkaBootstrapServers)
                 .withDetail("kafkaResponse", responseInfo)
                 .withDetail("clusterId", describeCluster.clusterId().get())
-                .withDetail("nodes", describeCluster.nodes().get().stream()
-                    .map(node -> String.format("%s:%d", node.host(), node.port()))
-                    .toList())
+                .withDetail("nodes",
+                        describeCluster.nodes()
+                            .get()
+                            .stream()
+                            .map(node -> String.format("%s:%d", node.host(), node.port()))
+                            .toList())
                 .withDetail("consumerGroups", groups.stream().map(GroupListing::groupId).toList())
                 .withDetail("topics", topics.stream().map(TopicListing::name).toList())
                 .build();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             wasDownLastCheck = true;
             log.warn("### Kafka Server connection down to {}", kafkaBootstrapServers, ex);
-            return Health.down(ex)
-                .withDetail("kafkaBootstrapServers", kafkaBootstrapServers)
-                .build();
+            return Health.down(ex).withDetail("kafkaBootstrapServers", kafkaBootstrapServers).build();
         }
     }
+
 }

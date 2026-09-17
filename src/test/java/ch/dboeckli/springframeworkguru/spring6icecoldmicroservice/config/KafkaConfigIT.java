@@ -31,18 +31,14 @@ class KafkaConfigIT {
                 log.info("Topic list: {}", topicsResult.names().get());
                 Collection<TopicListing> topics = topicsResult.listings().get(5, TimeUnit.SECONDS);
 
-                assertThat(topics)
-                    .extracting(TopicListing::name)
-                    .contains(KafkaConstants.DRINK_REQUEST_ICE_COLD_TOPIC);
+                assertThat(topics).extracting(TopicListing::name).contains(KafkaConstants.DRINK_REQUEST_ICE_COLD_TOPIC);
             });
 
             await().atMost(30, TimeUnit.SECONDS).untilAsserted(() -> {
                 ListGroupsResult consumerGroupsResult = adminClient.listGroups();
                 Collection<GroupListing> groups = consumerGroupsResult.all().get(5, TimeUnit.SECONDS);
 
-                assertThat(groups)
-                    .extracting(GroupListing::groupId)
-                    .contains(GROUP_ID);
+                assertThat(groups).extracting(GroupListing::groupId).contains(GROUP_ID);
             });
         }
     }
