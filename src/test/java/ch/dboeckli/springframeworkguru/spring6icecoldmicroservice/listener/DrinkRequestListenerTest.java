@@ -19,7 +19,8 @@ import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@EmbeddedKafka(controlledShutdown = true, topics = {KafkaConstants.DRINK_REQUEST_ICE_COLD_TOPIC, KafkaConstants.DRINK_PREPARED_TOPIC}, partitions = 1)
+@EmbeddedKafka(controlledShutdown = true,
+        topics = { KafkaConstants.DRINK_REQUEST_ICE_COLD_TOPIC, KafkaConstants.DRINK_PREPARED_TOPIC }, partitions = 1)
 @ActiveProfiles("test")
 @Slf4j
 public class DrinkRequestListenerTest {
@@ -32,21 +33,15 @@ public class DrinkRequestListenerTest {
 
     @Test
     void listenDrinkRequest() {
-        drinkRequestListener.listenDrinkRequest(DrinkRequestEvent.builder()
-            .beerOrderLineDTO(createDto())
-            .build());
+        drinkRequestListener.listenDrinkRequest(DrinkRequestEvent.builder().beerOrderLineDTO(createDto()).build());
 
-        await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> assertEquals(1, drinkPreparedListener.messageCounter.get()));
+        await().atMost(5, TimeUnit.SECONDS)
+            .untilAsserted(() -> assertEquals(1, drinkPreparedListener.messageCounter.get()));
     }
-
 
     public BeerOrderLineDTO createDto() {
         return BeerOrderLineDTO.builder()
-            .beer(BeerDTO.builder()
-                .id(UUID.randomUUID())
-                .beerStyle(BeerStyle.IPA)
-                .beerName("Test Beer")
-                .build())
+            .beer(BeerDTO.builder().id(UUID.randomUUID()).beerStyle(BeerStyle.IPA).beerName("Test Beer").build())
             .build();
     }
 

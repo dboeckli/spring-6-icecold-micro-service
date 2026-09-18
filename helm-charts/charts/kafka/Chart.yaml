@@ -1,6 +1,6 @@
 apiVersion: v2
-name: spring-6-icecold-micro-service-kafka
+name: spring-6-icecold-micro-service-kafka-chart
 description: A Helm subchart for Kafka
 type: application
 version: @helm.chart.version@
-appVersion: "@project.version@"
+appVersion: "@helm.chart.version@"
