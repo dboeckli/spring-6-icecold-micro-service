@@ -16,7 +16,9 @@ import org.springframework.stereotype.Component;
 public class DrinkRequestListener {
 
     public static final String GROUP_ID = "IceColdListener";
+
     private final DrinkRequestProcessor drinkRequestProcessor;
+
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @KafkaListener(groupId = GROUP_ID, topics = KafkaConstants.DRINK_REQUEST_ICE_COLD_TOPIC)
@@ -25,9 +27,8 @@ public class DrinkRequestListener {
 
         drinkRequestProcessor.processDrinkRequest(event);
 
-        kafkaTemplate.send(KafkaConstants.DRINK_PREPARED_TOPIC, DrinkPreparedEvent.builder()
-            .beerOrderLineDTO(event.getBeerOrderLineDTO())
-            .build());
+        kafkaTemplate.send(KafkaConstants.DRINK_PREPARED_TOPIC,
+                DrinkPreparedEvent.builder().beerOrderLineDTO(event.getBeerOrderLineDTO()).build());
 
     }
 

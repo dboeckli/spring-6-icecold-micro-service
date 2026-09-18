@@ -1,3 +1,6 @@
+nameOverride: "spring-6-icecold-micro-service"
+fullnameOverride: "spring-6-icecold-micro-service"
+
 global:
   timezone: Europe/Zurich
   timezonePath: /etc/localtime
@@ -40,6 +43,8 @@ probes:
     failureThreshold: 6
 
 kafka:
+  enabled: true
+  fullnameOverride: "spring-6-icecold-micro-service-kafka"
   serviceFQDN: "spring-6-icecold-micro-service-kafka.spring-6-icecold-micro-service.svc.cluster.local"
   port: 9092
   clientPort: 29092
