@@ -57,7 +57,7 @@
     <!-- 2.34.0-alpha depends on opentelemetry-api-incubator 1.68.0-alpha, matching Boot's managed ${opentelemetry.version} -->
     <opentelemetry-logback-appender.version>2.34.0-alpha</opentelemetry-logback-appender.version>
     <spring-javaformat-maven-plugin.version>0.0.48</spring-javaformat-maven-plugin.version>
-    <spotless-maven-plugin.version>3.11.0</spotless-maven-plugin.version>
+    <spotless-maven-plugin.version>3.12.0</spotless-maven-plugin.version>
     <exec-maven-plugin.version>3.7.0</exec-maven-plugin.version>
     <properties-maven-plugin.version>1.4.0</properties-maven-plugin.version>
     <merge-yaml-plugin.version>1.4</merge-yaml-plugin.version>
